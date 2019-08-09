@@ -1,0 +1,9 @@
+Name: SolNE
+Version: 0.0.1
+Date: 2019-08-07
+Title: solving nonlinear equations
+Author: GroupX
+Maintainer: GroupX
+License: GPLv3+
+Description: A package for solving nonlinear equations.
+Categories: SIM data

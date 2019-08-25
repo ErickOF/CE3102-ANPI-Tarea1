@@ -216,8 +216,54 @@ def sne_ud_4(f, x0, tol, graf=1):
         raise ValueError('f has an unknown symbol. ' + str(e).capitalize())
 
 # ============================== Method 5 ====================================
-def sne_ud_5(*args, **kwargs):
-    pass
+def sne_ud_5(f, x0, tol, graf=1):
+    if (not isinstance(f, str)):
+        raise ValueError('f must be a string')
+    
+    if (not isinstance(x0, (int, float))):
+        raise ValueError('x0 must be a int or float')
+    
+    if (not isinstance(tol, (int, float))):
+        raise ValueError('tol must be a int or float')
+    
+    if (graf != 0 and graf != 1):
+        raise ValueError('graf must be 0 or 1')
+
+    xAprox = np.array([x0])
+    _iter = 0
+    
+    try:
+        fx = lambda x: eval(f)
+        error = np.array([abs(fx(xAprox[-1]))])
+
+        while (abs(fx(xAprox[-1])) > tol):
+            xk = xAprox[-1]
+
+            yk = fx(xk)
+            df = misc.derivative(fx, xk, dx=1e-6)
+            df2 = misc.derivative(fx, xk, n=2, dx=1e-6)
+            df3 = misc.derivative(fx, xk, n=3, order=5, dx=1e-6)
+            
+            Lf = yk * df2 / df**2
+            Ldf = df * df3 / df2**2
+
+            xk_next = xk - 1.5 * ((2 - Lf)**2 / \
+                      (6 - 9 * Lf + 3 * Lf**2 + Lf**2 * Ldf)) * (yk / df)
+
+            xAprox = np.append(xAprox, xk_next)
+            error = np.append(error, abs(fx(xk_next)))
+
+            _iter += 1
+        
+        if graf == 1:
+            k = np.linspace(0, _iter, _iter + 1)
+            plotFunction(k, error, 'Danby Burkardt Method')
+
+        return xAprox[-1], _iter
+    except AttributeError as e:
+        raise ValueError('f has an unknown function. ' + str(e).capitalize())
+    except TypeError as e:
+        raise ValueError('f has an unknown symbol. ' + str(e).capitalize())
 
 # ============================== Method 6 ====================================
 def sne_ud_6(*args, **kwargs):

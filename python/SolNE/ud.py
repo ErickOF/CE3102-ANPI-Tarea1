@@ -12,7 +12,7 @@ global DECIMAL_PRECISION                    # Amount of decimal values
 
 x = symbols('x')
 ITER_LIMIT = 10000
-DECIMAL_PRECISION = 100
+DECIMAL_PRECISION = 50
 
 
 # ============================== Method 1 ====================================
@@ -42,7 +42,7 @@ def sne_ud_1(expr, x0, tol):
     error = abs(f.subs(x, xn))              # calculates the error of x0
 
     try:
-        # -------------------- Steffensen's Method ---------------------------
+        # ---------------------- Halley's Method -----------------------------
         while (error > tol):
             if(itera >= ITER_LIMIT):
                 print("WARNING: Iteration limit reached")
@@ -94,7 +94,7 @@ def sne_ud_2(expr, x0, tol):
     error = abs(f.subs(x, xn))              # calculates the error of x0
 
     try:
-        # -------------------- Steffensen's Method ---------------------------
+        # ---------------- Frontini's y Sormani's Method ---------------------
         while (error > tol):
             if(itera >= ITER_LIMIT):
                 print("WARNING: Iteration limit reached")

@@ -1,5 +1,9 @@
 # =========== Important: ¡must install Sympy! (pip install sympy) ============
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy import misc
 from sympy import *
+
 
 # ========================== Global variables ================================
 global x                                    # x (is a global symbol)
@@ -24,7 +28,6 @@ def sne_ud_1(expr, x0, tol):
         xn {float} -- root approximation
         itera {int} -- amount of iterations required
         graph {int} -- flag that indicates if a graph must be done
-
     """
 
     # -------------------------- Validations ---------------------------------
@@ -65,6 +68,7 @@ def sne_ud_1(expr, x0, tol):
     return N(xn, DECIMAL_PRECISION), itera, graph
 
 
+# ============================== Method 2 ====================================
 def sne_ud_2(expr, x0, tol):
     """Frontini's y Sormani's Method
 
@@ -77,7 +81,6 @@ def sne_ud_2(expr, x0, tol):
         xn {float} -- root approximation
         itera {int} -- amount of iterations required
         graph {int} -- flag that indicates if a graph must be done
-
     """
 
     # -------------------------- Validations ---------------------------------
@@ -122,23 +125,70 @@ def sne_ud_2(expr, x0, tol):
     return N(xn, DECIMAL_PRECISION), itera, graph
 
 
-def sne_ud_3(*args, **kwargs):
-    pass
+# ============================== Method 3 ====================================
+def sne_ud_3(f, x0, tol, graf=1):
+    if (not isinstance(f, str)):
+        raise ValueError('f must be a string')
+    
+    if (not isinstance(x0, (int, float))):
+        raise ValueError('x0 must be a int or float')
+    
+    if (not isinstance(tol, (int, float))):
+        raise ValueError('tol must be a int or float')
+    
+    if (graf != 0 and graf != 1):
+        raise ValueError('graf must be 0 or 1')
+
+    xAprox = np.array([x0])
+    _iter = 0
+    
+    try:
+        fx = lambda x: eval(f)
+        error = np.array([abs(fx(xAprox[-1]))])
+
+        while (abs(fx(xAprox[-1])) > tol):
+            xk = xAprox[-1]
+
+            y = fx(xk)
+            df = misc.derivative(fx, xk, dx=1e-6)
+            df2 = misc.derivative(fx, xk, n=2, dx=1e-6)
+
+            Lf = y * df2 / df**2
+
+            xk_next = xk - (1 + 0.5 * Lf) * y / df
+
+            xAprox = np.append(xAprox, xk_next)
+            error = np.append(error, abs(fx(xk_next)))
+
+            _iter += 1
+        
+        if graf == 1:
+            k = np.linspace(0, _iter, _iter + 1)
+            plotFunction(k, error, 'Chebyshev Method')
+
+        return xAprox[-1], _iter
+    except AttributeError as e:
+        raise ValueError('f has an unknown function. ' + str(e).capitalize())
+    except TypeError as e:
+        raise ValueError('f has an unknown symbol. ' + str(e).capitalize())
 
 
+# ============================== Method 4 ====================================
 def sne_ud_4(*args, **kwargs):
     pass
 
 
+# ============================== Method 5 ====================================
 def sne_ud_5(*args, **kwargs):
     pass
 
 
+# ============================== Method 6 ====================================
 def sne_ud_6(*args, **kwargs):
     pass
 
 
-# =========================== Auxiliary function =============================
+# =========================== Auxiliary functions =============================
 def validator(expr, x0, tol):
     """Auxiliary function that validates inputs
 
@@ -149,16 +199,17 @@ def validator(expr, x0, tol):
 
     Returns:
         flag {boolean} -- true if all inputs are valid
-
     """
 
     # -------------------------- Validations ---------------------------------
     if (type(expr) != str):
         print("WARNING: invalid expression")
         return False
+    
     if (type(x0) != float and type(x0) != int):
         print("WARNING: x_0 must be a number")
         return False
+    
     if (type(tol) != float and type(tol) != int):
         print("WARNING: tolerance must be a number")
         return False
@@ -169,3 +220,10 @@ def validator(expr, x0, tol):
               "-", str(exception))
         return False
     return True
+
+def plotFunction(k, error, title):
+    plt.title(title)
+    plt.xlabel('Iterations k')
+    plt.ylabel('Error |f(xk)|')
+    plt.plot(k, error)
+    plt.show()

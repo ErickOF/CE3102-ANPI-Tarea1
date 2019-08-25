@@ -54,6 +54,3 @@ function [xn, itera, graph] = sne_fd_1(expr, x0, tol)
     return;
   end
 endfunction
-
-
-[xn, itera, graph] = sne_fd_1(x^2-exp(x), 0.5, 0.000001)

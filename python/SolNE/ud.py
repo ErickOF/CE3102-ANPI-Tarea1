@@ -62,8 +62,51 @@ def sne_ud_1(expr, x0, tol):
     return Float(xn, DECIMAL_PRECISION), itera, graph
 
 
-def sne_ud_2(*args, **kwargs):
-    pass
+def sne_ud_2(expr, x0, tol):
+    """Frontini's y Sormani's Method
+
+    Arguments:
+        expr {string} -- polynomial whose solution must be found
+        x0 {float, int} -- initial value to start iterations
+        tol {float, int} -- tolerance that indicates the stop condition
+
+    Returns:
+        xn {float} -- root approximation
+        itera {int} -- amount of iterations required
+        graph {int} -- flag that indicates if a graph must be done
+
+    """
+
+    # -------------------------- Validations ---------------------------------
+    if (validator(expr, x0, tol) != True):
+        return x0, 0, 0
+    # ------------------------ Local variables -------------------------------
+    f = sympify(expr)                       # Transforms string to function
+    graph = 0                               # Wether the graph will be shown
+    itera = 0                               # Amount of iterations
+    xn = sympify(x0)                        # xn is a Sympy variable
+    xNext = sympify(0)                      # xNext (x_(n+1))
+    error = abs(f.subs(x, xn))              # calculates the error of x0
+
+    try:
+        # -------------------- Steffensen's Method ---------------------------
+        while (error > tol):
+            if(itera >= ITER_LIMIT):
+                print("WARNING: Iteration limit reached")
+                return Float(xn, DECIMAL_PRECISION), itera, graph
+            fDiff = diff(f, x)
+            xNext = \
+                xn - (f.subs(x, xn)) / \
+                (fDiff.subs(x, (xn - 0.5 * f.subs(x, xn)/fDiff.subs(x, xn))))
+            xn = Float(xNext, DECIMAL_PRECISION)
+            error = abs(f.subs(x, xn))
+            itera += 1                      # New iteration
+        graph = 1                           # Graph can be displayed
+
+    except Exception as exception:
+        print("WARNING: [Math error]", type(exception).__name__)
+
+    return Float(xn, DECIMAL_PRECISION), itera, graph
 
 
 def sne_ud_3(*args, **kwargs):

@@ -10,17 +10,15 @@ ITER_LIMIT = 99;
 function [xn, itera, graph] = sne_ud_1(expr, x0, tol)
   %{
   Halley's Method
+  Arguments:
+      expr {symbolic} -- polynomial whose solution must be found
+      x0 {double} -- initial value to start iterations
+      tol {double} -- tolerance that indicates the stop condition
 
-    Arguments:
-        expr {string} -- polynomial whose solution must be found
-        x0 {float, int} -- initial value to start iterations
-        tol {float, int} -- tolerance that indicates the stop condition
-
-    Returns:
-        xn {float} -- root approximation
-        itera {int} -- amount of iterations required
-        graph {int} -- flag that indicates if a graph must be done
-
+  Returns:
+      xn {double} -- root approximation
+      itera {int} -- amount of iterations required
+      graph {int} -- flag that indicates if a graph must be done
   %}
 
   % -------------------------- Local variables -------------------------------
@@ -64,17 +62,15 @@ endfunction
 function [xn, itera, graph] = sne_ud_2(expr, x0, tol)
   %{
   Frontini's and Sormani's Method
+  Arguments:
+      expr {symbolic} -- polynomial whose solution must be found
+      x0 {double} -- initial value to start iterations
+      tol {double} -- tolerance that indicates the stop condition
 
-    Arguments:
-        expr {string} -- polynomial whose solution must be found
-        x0 {float, int} -- initial value to start iterations
-        tol {float, int} -- tolerance that indicates the stop condition
-
-    Returns:
-        xn {float} -- root approximation
-        itera {int} -- amount of iterations required
-        graph {int} -- flag that indicates if a graph must be done
-
+  Returns:
+      xn {double} -- root approximation
+      itera {int} -- amount of iterations required
+      graph {int} -- flag that indicates if a graph must be done
   %}
 
   % -------------------------- Local variables -------------------------------

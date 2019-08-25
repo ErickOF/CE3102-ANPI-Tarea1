@@ -1,7 +1,6 @@
 # =========== Important: ¡must install Sympy! (pip install sympy) ============
 from sympy import *
 
-
 # ========================== Global variables ================================
 global x                                    # x (is a global symbol)
 global ITER_LIMIT                           # Limit of iterations
@@ -44,22 +43,26 @@ def sne_ud_1(expr, x0, tol):
         while (error > tol):
             if(itera >= ITER_LIMIT):
                 print("WARNING: Iteration limit reached")
-                return Float(xn, DECIMAL_PRECISION), itera, graph
-            fDiff = diff(f, x)
-            fDiff2 = diff(fDiff, x)
-            xNext = \
-                xn - (2*(f.subs(x, xn))*(fDiff.subs(x, xn))) / \
-                (2*(fDiff.subs(x, xn))*(fDiff.subs(x, xn)) -
-                 f.subs(x, xn)*fDiff2.subs(x, xn))
-            xn = Float(xNext, DECIMAL_PRECISION)
+                return N(xn, DECIMAL_PRECISION), itera, graph
+            fDiff = diff(f, x)              # First derivative
+            fDiff2 = diff(fDiff, x)         # Second derivative
+            div = (2*(fDiff.subs(x, xn))*(fDiff.subs(x, xn)) -
+                   f.subs(x, xn)*fDiff2.subs(x, xn))
+            if (div != 0):
+                xNext = xn - (2*(f.subs(x, xn))*(fDiff.subs(x, xn))) / div
+            else:
+                print("WARNING: [Math error] Division by zero")
+                return N(xn, DECIMAL_PRECISION), itera, graph
+            xn = N(xNext, DECIMAL_PRECISION)
             error = abs(f.subs(x, xn))
             itera += 1                      # New iteration
         graph = 1                           # Graph can be displayed
 
     except Exception as exception:
-        print("WARNING: [Math error]", type(exception).__name__)
+        print("WARNING: [Math error]", type(
+            exception).__name__, "-", str(exception))
 
-    return Float(xn, DECIMAL_PRECISION), itera, graph
+    return N(xn, DECIMAL_PRECISION), itera, graph
 
 
 def sne_ud_2(expr, x0, tol):
@@ -93,20 +96,30 @@ def sne_ud_2(expr, x0, tol):
         while (error > tol):
             if(itera >= ITER_LIMIT):
                 print("WARNING: Iteration limit reached")
-                return Float(xn, DECIMAL_PRECISION), itera, graph
+                return N(xn, DECIMAL_PRECISION), itera, graph
             fDiff = diff(f, x)
-            xNext = \
-                xn - (f.subs(x, xn)) / \
-                (fDiff.subs(x, (xn - 0.5 * f.subs(x, xn)/fDiff.subs(x, xn))))
-            xn = Float(xNext, DECIMAL_PRECISION)
+            div = fDiff.subs(x, xn)
+            if (div != 0):
+                div2 = fDiff.subs(x, (xn - 0.5 * f.subs(x, xn)/div))
+                if (div2 != 0):
+                    xNext = xn - (f.subs(x, xn) / div2)
+                else:
+                    print("WARNING: [Math error] Division by zero")
+                    return N(xn, DECIMAL_PRECISION), itera, graph
+            else:
+                print("WARNING: [Math error] Division by zero")
+                return N(xn, DECIMAL_PRECISION), itera, graph
+
+            xn = N(xNext, DECIMAL_PRECISION)
             error = abs(f.subs(x, xn))
             itera += 1                      # New iteration
         graph = 1                           # Graph can be displayed
 
     except Exception as exception:
-        print("WARNING: [Math error]", type(exception).__name__)
+        print("WARNING: [Math error]", type(
+            exception).__name__, "-", str(exception))
 
-    return Float(xn, DECIMAL_PRECISION), itera, graph
+    return N(xn, DECIMAL_PRECISION), itera, graph
 
 
 def sne_ud_3(*args, **kwargs):
@@ -152,6 +165,7 @@ def validator(expr, x0, tol):
     try:
         f = sympify(expr)
     except Exception as exception:
-        print("WARNING: [invalid expression]: ", type(exception).__name__)
+        print("WARNING: [invalid expression]: ", type(exception).__name__,
+              "-", str(exception))
         return False
     return True

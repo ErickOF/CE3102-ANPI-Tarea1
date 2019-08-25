@@ -44,19 +44,23 @@ def sne_fd_1(expr, x0, tol):
         while (error > tol):
             if(itera >= ITER_LIMIT):
                 print("WARNING: Iteration limit reached")
-                return Float(xn, DECIMAL_PRECISION), itera, graph
-            xNext = \
-                xn - (f.subs(x, xn) * f.subs(x, xn)) / \
-                (f.subs(x, xn + f.subs(x, xn)) - f.subs(x, xn))
-            xn = Float(xNext, DECIMAL_PRECISION)
+                return N(xn, DECIMAL_PRECISION), itera, graph
+            div = f.subs(x, xn + f.subs(x, xn)) - f.subs(x, xn)
+            if (div != 0):
+                xNext = xn - (f.subs(x, xn) * f.subs(x, xn)) / div
+            else:
+                print("WARNING: [Math error] Division by zero")
+                return N(xn, DECIMAL_PRECISION), itera, graph
+            xn = N(xNext, DECIMAL_PRECISION)
             error = abs(f.subs(x, xn))
             itera += 1                      # New iteration
         graph = 1                           # Graph can be displayed
 
     except Exception as exception:
-        print("WARNING: [Math error]", type(exception).__name__)
+        print("WARNING: [Math error]", type(
+            exception).__name__, "-", str(exception))
 
-    return Float(xn, DECIMAL_PRECISION), itera, graph
+    return N(xn, DECIMAL_PRECISION), itera, graph
 
 
 # ============================== Method 2 ====================================
@@ -111,6 +115,7 @@ def validator(expr, x0, tol):
     try:
         f = sympify(expr)
     except Exception as exception:
-        print("WARNING: [invalid expression]: ", type(exception).__name__)
+        print("WARNING: [invalid expression]: ", type(
+            exception).__name__, "-", str(exception))
         return False
     return True

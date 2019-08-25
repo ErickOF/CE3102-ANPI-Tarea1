@@ -1,9 +1,9 @@
 from fd import *
 from ud import *
 
-# expression = "x^3-x-2"                  # Division by zero
-expression = "exp(x) - 3*x"
-x0 = 1
+expression = "9*x+3"                  # Division by zero
+# expression = "exp(x) - 3*x"
+x0 = 0.5
 tol = 0.000001
 
 print("\n\nSteffensen's: ")

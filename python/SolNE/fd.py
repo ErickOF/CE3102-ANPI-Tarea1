@@ -9,7 +9,7 @@ global DECIMAL_PRECISION                    # Amount of decimal values
 
 x = symbols('x')
 ITER_LIMIT = 10000
-DECIMAL_PRECISION = 100
+DECIMAL_PRECISION = 50
 
 
 # ============================== Method 1 ====================================

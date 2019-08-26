@@ -67,7 +67,7 @@ def sne_fd_1(f, x0, tol, graf):
 # ============================== Method 2 ====================================
 
 
-def sne_fd_2(f, x0, a0, b0, tol, graf=1):
+def sne_fd_2(f, x0, x1, x2, tol, graf=1):
     """
     Yun-Petkovic Method
 
@@ -77,14 +77,14 @@ def sne_fd_2(f, x0, a0, b0, tol, graf=1):
 
         f  {string} - polynomial whose solution must be found
         x0 {float, int} - initial value to start iterations
-        a0 {float, int} - interval low value
-        b0 {float, int} - interval high value
+        x1 {float, int} - interval low value
+        x2 {float, int} - interval high value
         tol {float, int} - tolerance that indicates the stop condition
         graph {int} - flag that indicates if a graph must be done
 
     Returns:
 
-        xn {float} - root approximation
+        xAprox {float} - root approximation
         _iter {int} - amount of iterations required
     """
     if (not isinstance(f, str)):
@@ -107,8 +107,8 @@ def sne_fd_2(f, x0, a0, b0, tol, graf=1):
         error = np.array([abs(fx(xAprox[-1]))])
 
         hk = 1
-        ak = a0
-        bk = b0
+        ak = x1
+        bk = x2
 
         while (abs(fx(xAprox[-1])) > tol):
             xk = xAprox[-1]

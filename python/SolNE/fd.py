@@ -16,55 +16,58 @@ DECIMAL_PRECISION = 50
 
 
 # ============================== Method 1 ====================================
-def sne_fd_1(expr, x0, tol):
+def sne_fd_1(f, x0, tol, graf):
     """Steffensen's Method
 
     Arguments:
-        expr {string} -- polynomial whose solution must be found
+        f {string} -- polynomial whose solution must be found
         x0 {float, int} -- initial value to start iterations
         tol {float, int} -- tolerance that indicates the stop condition
+        graf {int} -- flag that indicates if a graph must be done
 
     Returns:
-        xn {float} -- root approximation
-        itera {int} -- amount of iterations required
-        graph {int} -- flag that indicates if a graph must be done
+        xAprox {float} -- root approximation
+        _iter {int} -- amount of iterations required
     """
 
     # -------------------------- Validations ---------------------------------
-    if (validator(expr, x0, tol) != True):
-        return x0, 0, 0
+    if (validator(f, x0, tol) != True):
+        return x0, 0
     # ------------------------ Local variables -------------------------------
-    f = sympify(expr)                       # Transforms string to function
-    graph = 0                               # Wether the graph will be shown
-    itera = 0                               # Amount of iterations
-    xn = sympify(x0)                        # xn is a Sympy variable
+    funct = sympify(f)                      # Transforms string to function
+    graf = 0                                # Wether the graph will be shown
+    _iter = 0                               # Amount of iterations
+    xAprox = sympify(x0)                   # xApprox is a Sympy variable
     xNext = sympify(0)                      # xNext (x_(n+1))
-    error = abs(f.subs(x, xn))              # calculates the error of x0
+    error = abs(funct.subs(x, xAprox))          # calculates the error of x0
 
     try:
         # -------------------- Steffensen's Method ---------------------------
         while (error > tol):
-            if(itera >= ITER_LIMIT):
+            if(_iter >= ITER_LIMIT):
                 print("WARNING: Iteration limit reached")
-                return N(xn, DECIMAL_PRECISION), itera, graph
-            div = f.subs(x, xn + f.subs(x, xn)) - f.subs(x, xn)
+                return N(xAprox, DECIMAL_PRECISION), _iter
+            div = funct.subs(x, xAprox + funct.subs(x, xAprox)) - \
+                funct.subs(x, xAprox)
             if (div != 0):
-                xNext = xn - (f.subs(x, xn) * f.subs(x, xn)) / div
+                xNext = xAprox - (funct.subs(x, xAprox) *
+                                  funct.subs(x, xAprox)) / div
             else:
                 print("WARNING: [Math error] Division by zero")
-                return N(xn, DECIMAL_PRECISION), itera, graph
-            xn = N(xNext, DECIMAL_PRECISION)
-            error = abs(f.subs(x, xn))
-            itera += 1                      # New iteration
-        graph = 1                           # Graph can be displayed
+                return N(xAprox, DECIMAL_PRECISION), _iter
+            xAprox = N(xNext, DECIMAL_PRECISION)
+            error = abs(funct.subs(x, xAprox))
+            _iter += 1                      # New iteration
 
     except Exception as exception:
         print("WARNING: [Math error]", type(
             exception).__name__, "-", str(exception))
 
-    return N(xn, DECIMAL_PRECISION), itera, graph
+    return N(xAprox, DECIMAL_PRECISION), _iter
 
 # ============================== Method 2 ====================================
+
+
 def sne_fd_2(f, x0, a0, b0, tol, graf=1):
     """
     Yun-Petkovic Method
@@ -87,21 +90,21 @@ def sne_fd_2(f, x0, a0, b0, tol, graf=1):
     """
     if (not isinstance(f, str)):
         raise ValueError('f must be a string')
-    
+
     if (not isinstance(x0, (int, float))):
         raise ValueError('x0 must be a int or float')
-    
+
     if (not isinstance(tol, (int, float))):
         raise ValueError('tol must be a int or float')
-    
+
     if (graf != 0 and graf != 1):
         raise ValueError('graf must be 0 or 1')
 
     xAprox = np.array([0, x0])
     _iter = 0
-    
+
     try:
-        fx = lambda x: eval(f)
+        def fx(x): return eval(f)
         error = np.array([abs(fx(xAprox[-1]))])
 
         hk = 1
@@ -121,7 +124,7 @@ def sne_fd_2(f, x0, a0, b0, tol, graf=1):
             bk = xk_next + hk
 
             _iter += 1
-        
+
         if graf == 1:
             k = np.linspace(0, _iter, _iter + 1)
             plotFunction(k, error, 'Yun-Petkovic Method')
@@ -133,10 +136,12 @@ def sne_fd_2(f, x0, a0, b0, tol, graf=1):
         raise ValueError('f has an unknown symbol. ' + str(e).capitalize())
 
 # ============================== Method 3 ====================================
+
+
 def sne_fd_3(f, x0, tol, graf=1):
     """
     Jain Method
-    
+
     Metodos iterativos optimos para la resolucion de ecuaciones no lineales. Page 1. Equation 1.
 
     Arguments:
@@ -156,18 +161,18 @@ def sne_fd_3(f, x0, tol, graf=1):
 
     if (not isinstance(x0, (int, float))):
         raise ValueError('x0 must be a int or float')
-    
+
     if (not isinstance(tol, (int, float))):
         raise ValueError('tol must be a int or float')
-    
+
     if (graf != 0 and graf != 1):
         raise ValueError('graf must be 0 or 1')
 
     xAprox = np.array([x0])
     _iter = 0
-    
+
     try:
-        fx = lambda x: eval(f)
+        def fx(x): return eval(f)
         error = np.array([abs(fx(xAprox[-1]))])
 
         while (abs(fx(xAprox[-1])) > tol):
@@ -182,7 +187,7 @@ def sne_fd_3(f, x0, tol, graf=1):
             error = np.append(error, abs(fx(xk_next)))
 
             _iter += 1
-        
+
         if graf == 1:
             k = np.linspace(0, _iter, _iter + 1)
             plotFunction(k, error, 'Jain Method')
@@ -194,10 +199,12 @@ def sne_fd_3(f, x0, tol, graf=1):
         raise ValueError('f has an unknown symbol. ' + str(e).capitalize())
 
 # ============================== Method 4 ====================================
+
+
 def sne_fd_4(f, x0, tol, graf=1):
     """
     Liu Method
-    
+
     Metodos iterativos optimos para la resolucion de ecuaciones no lineales. Page 1. Equation 2.
 
     Arguments:
@@ -217,18 +224,18 @@ def sne_fd_4(f, x0, tol, graf=1):
 
     if (not isinstance(x0, (int, float))):
         raise ValueError('x0 must be a int or float')
-    
+
     if (not isinstance(tol, (int, float))):
         raise ValueError('tol must be a int or float')
-    
+
     if (graf != 0 and graf != 1):
         raise ValueError('graf must be 0 or 1')
 
     xAprox = np.array([x0])
     _iter = 0
-    
+
     try:
-        fx = lambda x: eval(f)
+        def fx(x): return eval(f)
         error = np.array([abs(fx(xAprox[-1]))])
 
         while (abs(fx(xAprox[-1])) > tol):
@@ -247,7 +254,7 @@ def sne_fd_4(f, x0, tol, graf=1):
             error = np.append(error, abs(fx(xk_next)))
 
             _iter += 1
-        
+
         if graf == 1:
             k = np.linspace(0, _iter, _iter + 1)
             plotFunction(k, error, 'Liu Method')
@@ -259,10 +266,12 @@ def sne_fd_4(f, x0, tol, graf=1):
         raise ValueError('f has an unknown symbol. ' + str(e).capitalize())
 
 # ============================== Method 5 ====================================
+
+
 def sne_fd_5(f, x0, tol, graf=1):
     """
     Ren Method
-    
+
     Metodos iterativos optimos para la resolucion de ecuaciones no lineales. Page 2. Equation 2.
 
     Arguments:
@@ -282,18 +291,18 @@ def sne_fd_5(f, x0, tol, graf=1):
 
     if (not isinstance(x0, (int, float))):
         raise ValueError('x0 must be a int or float')
-    
+
     if (not isinstance(tol, (int, float))):
         raise ValueError('tol must be a int or float')
-    
+
     if (graf != 0 and graf != 1):
         raise ValueError('graf must be 0 or 1')
 
     xAprox = np.array([x0])
     _iter = 0
-    
+
     try:
-        fx = lambda x: eval(f)
+        def fx(x): return eval(f)
         error = np.array([abs(fx(xAprox[-1]))])
 
         while (abs(fx(xAprox[-1])) > tol):
@@ -313,7 +322,7 @@ def sne_fd_5(f, x0, tol, graf=1):
             error = np.append(error, abs(fx(xk_next)))
 
             _iter += 1
-        
+
         if graf == 1:
             k = np.linspace(0, _iter, _iter + 1)
             plotFunction(k, error, 'Ren Method')
@@ -325,10 +334,12 @@ def sne_fd_5(f, x0, tol, graf=1):
         raise ValueError('f has an unknown symbol. ' + str(e).capitalize())
 
 # ============================== Method 6 ====================================
+
+
 def sne_fd_6(f, x0, tol, graf=1):
     """
     Free Derivative Ostrowski Method
-    
+
     Journal of Computational and Applied mathematics. Equation 4
 
     Arguments:
@@ -348,18 +359,18 @@ def sne_fd_6(f, x0, tol, graf=1):
 
     if (not isinstance(x0, (int, float))):
         raise ValueError('x0 must be a int or float')
-    
+
     if (not isinstance(tol, (int, float))):
         raise ValueError('tol must be a int or float')
-    
+
     if (graf != 0 and graf != 1):
         raise ValueError('graf must be 0 or 1')
 
     xAprox = np.array([x0])
     _iter = 0
-    
+
     try:
-        fx = lambda x: eval(f)
+        def fx(x): return eval(f)
         error = np.array([abs(fx(xAprox[-1]))])
 
         while (abs(fx(xAprox[-1])) > tol):
@@ -374,7 +385,7 @@ def sne_fd_6(f, x0, tol, graf=1):
             error = np.append(error, abs(fx(xk_next)))
 
             _iter += 1
-        
+
         if graf == 1:
             k = np.linspace(0, _iter, _iter + 1)
             plotFunction(k, error, 'Free Derivative Ostrowski Method')
@@ -386,11 +397,13 @@ def sne_fd_6(f, x0, tol, graf=1):
         raise ValueError('f has an unknown symbol. ' + str(e).capitalize())
 
 # =========================== Auxiliary function =============================
-def validator(expr, x0, tol):
+
+
+def validator(f, x0, tol):
     """Auxiliary function that validates inputs
 
     Arguments:
-        expr {string} -- polynomial whose solution must be found
+        f {string} -- polynomial whose solution must be found
         x0 {float, int} -- initial value to start iterations
         tol {float, int} -- tolerance that indicates the stop condition
 
@@ -399,7 +412,7 @@ def validator(expr, x0, tol):
     """
 
     # -------------------------- Validations ---------------------------------
-    if (type(expr) != str):
+    if (type(f) != str):
         print("WARNING: invalid expression")
         return False
 
@@ -412,17 +425,18 @@ def validator(expr, x0, tol):
         return False
 
     try:
-        f = sympify(expr)
+        f = sympify(f)
     except Exception as exception:
         print("WARNING: [invalid expression]: ", type(
             exception).__name__, "-", str(exception))
         return False
     return True
 
-def steffensen_method(expr, x0, n):
+
+def steffensen_method(f, x0, n):
     """
     Steffensen Method
-    
+
     This function is used to calculate some necessary values for other functions
 
     Arguments:
@@ -435,7 +449,7 @@ def steffensen_method(expr, x0, n):
 
         xn {float} - root approximation
     """
-    f = lambda x: eval(expr)
+    def f(x): return eval(f)
     itera = 0
     xn = x0
 
@@ -447,6 +461,7 @@ def steffensen_method(expr, x0, n):
         xn = xn - (2 * f(xn) * df) / div
         itera += 1
     return xn
+
 
 def plotFunction(k, error, title):
     """

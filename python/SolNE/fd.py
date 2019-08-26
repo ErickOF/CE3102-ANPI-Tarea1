@@ -162,9 +162,52 @@ def sne_fd_3(f, x0, tol, graf=1):
 
 
 # ============================== Method 4 ====================================
-def sne_fd_4(*args, **kwargs):
-    pass
+def sne_fd_4(f, x0, tol, graf=1):
+    if (not isinstance(f, str)):
+        raise ValueError('f must be a string')
 
+    if (not isinstance(x0, (int, float))):
+        raise ValueError('x0 must be a int or float')
+    
+    if (not isinstance(tol, (int, float))):
+        raise ValueError('tol must be a int or float')
+    
+    if (graf != 0 and graf != 1):
+        raise ValueError('graf must be 0 or 1')
+
+    xAprox = np.array([x0])
+    _iter = 0
+    
+    try:
+        fx = lambda x: eval(f)
+        error = np.array([abs(fx(xAprox[-1]))])
+
+        while (abs(fx(xAprox[-1])) > tol):
+            xk = xAprox[-1]
+
+            yk = steffensen_method(f, x0, _iter)
+            zk = xk + fx(xk)
+
+            f_xk_yk = (fx(yk) - fx(xk)) / (yk - xk)
+            f_yk_zk = (fx(zk) - fx(yk)) / (zk - yk)
+            f_xk_zk = (fx(zk) - fx(xk)) / (zk - xk)
+
+            xk_next = yk - fx(yk)*((f_xk_yk - f_yk_zk + f_xk_zk) / f_xk_yk**2)
+
+            xAprox = np.append(xAprox, xk_next)
+            error = np.append(error, abs(fx(xk_next)))
+
+            _iter += 1
+        
+        if graf == 1:
+            k = np.linspace(0, _iter, _iter + 1)
+            plotFunction(k, error, 'Liu Method')
+
+        return xAprox[-1], _iter
+    except AttributeError as e:
+        raise ValueError('f has an unknown function. ' + str(e).capitalize())
+    except TypeError as e:
+        raise ValueError('f has an unknown symbol. ' + str(e).capitalize())
 
 # ============================== Method 5 ====================================
 def sne_fd_5(*args, **kwargs):

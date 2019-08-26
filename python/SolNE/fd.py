@@ -152,7 +152,7 @@ def sne_fd_3(f, x0, tol, graf=1):
 
     Returns:
 
-        xn {float} - root approximation
+        xAprox {float} - root approximation
         _iter {int} - amount of iterations required
     """
     if (not isinstance(f, str)):
@@ -215,7 +215,7 @@ def sne_fd_4(f, x0, tol, graf=1):
 
     Returns:
 
-        xn {float} - root approximation
+        xAprox {float} - root approximation
         _iter {int} - amount of iterations required
     """
     if (not isinstance(f, str)):
@@ -282,7 +282,7 @@ def sne_fd_5(f, x0, tol, graf=1):
 
     Returns:
 
-        xn {float} - root approximation
+        xAprox {float} - root approximation
         _iter {int} - amount of iterations required
     """
     if (not isinstance(f, str)):
@@ -350,7 +350,7 @@ def sne_fd_6(f, x0, tol, graf=1):
 
     Returns:
 
-        xn {float} - root approximation
+        xAprox {float} - root approximation
         _iter {int} - amount of iterations required
     """
     if (not isinstance(f, str)):

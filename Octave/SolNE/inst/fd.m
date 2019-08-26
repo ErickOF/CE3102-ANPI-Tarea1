@@ -124,18 +124,106 @@ function [xAprox, iter] = sne_fd_2(f, x0, x1, x2, tol, graf=1)
 endfunction
 
 
+% ============================== Method 3 ====================================
+%
+% Jain Method
+%
+% Metodos iterativos optimos para la resolucion de ecuaciones no lineales. Page 1. Equation 1.
+%
+% Arguments:
+%   f  {string} - polynomial whose solution must be found
+%   x0 {float, int} - initial value to start iterations
+%   tol {float, int} - tolerance that indicates the stop condition
+%   graf {int} - flag that indicates if a plot must be done
+%
+% Returns:
+%   xAprox {float} - root approximation
+%   iter {int} - amount of iterations required
+%
+function [xAprox, iter] = sne_fd_3(f, x0, x1, x2, tol, graf=1)
+  if (typeinfo(f) != "string")
+    error("f must be a string");
+  endif
+
+  if (graf != 0 && graf != 1)
+    error("graf must be 0 or 1");
+  endif
+
+  syms fx(x);
+  fx(x) = f;
+  xn = [x0];
+  iter = 0;
+
+  try
+    error = [abs(double(fx(xn(end))))];
+
+    while (error(end) > tol)
+      xk = xn(end);
+
+      y = double(fx(xk));
+      yk = steffensen_method(f, x0, iter);
+
+      xk_next = xk - y**3 / ((double(fx(xk + y)) - y) * (y - double(fx(yk))));
+
+      xn = [xn xk_next];
+      error = [error abs(double(fx(xk_next)))];
+
+      iter += 1;
+    endwhile
+
+    if (graf == 1)
+      k = 0:1:iter;
+      plotFunction(k, error, "Jain Method")
+    endif
+  catch
+    error("f has an unknown function.");
+  end
+  
+  xAprox = xn(end);
+  return;
+endfunction
 
 
-
-
-
+% ============================== Method 4 ====================================
+%
 
 
 
 
 
 % =========================== Auxiliaries functions =============================
+
+% Steffensen Method
 %
+% This function is used to calculate some necessary values for other functions
+%
+% Arguments:
+%   exp {string} - polynomial whose solution must be found
+%   x0 {float, int} - initial value to start iterations
+%   n {int} - number of iterations
+%
+% Returns:
+%   xAprox {float} - root approximation
+%
+function xAprox = steffensen_method(exp, x0, n)
+  syms fx(x);
+  fx(x) = exp;
+  xAprox = x0;
+  iter = 0;
+  
+  while (iter <= n)
+    yk = double(fx(xAprox));
+    df = double(diff(fx)(xAprox));
+    df2 = double(diff(diff(fx))(xAprox));
+    
+    div = (2 * df^2 - yk * df2);
+    xAprox = xAprox - (2 * yk * df) / div;
+    iter += 1;
+  endwhile
+  return;
+endfunction
+
+
 % This function is used to plot iterations vs error
 %
 % Arguments:

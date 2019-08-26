@@ -371,7 +371,7 @@ endfunction
 % =========================== Auxiliaries functions =============================
 
 % This function is used to plot iterations vs error
-
+%
 % Arguments:
 %   k {iterable} - an iterable with x axis values
 %   error {iterable} - an iterable with y axis values

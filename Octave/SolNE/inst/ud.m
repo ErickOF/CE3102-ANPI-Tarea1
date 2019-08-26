@@ -136,11 +136,11 @@ endfunction
 %
 function [xAprox, iter] = sne_ud_3(f, x0, tol, graf=1)
   if (typeinfo(f) != "string")
-    error('f must be a string');
+    error("f must be a string");
   endif
 
   if (graf != 0 && graf != 1)
-    error('graf must be 0 or 1');
+    error("graf must be 0 or 1");
   endif
 
   syms fx(x);
@@ -170,7 +170,7 @@ function [xAprox, iter] = sne_ud_3(f, x0, tol, graf=1)
 
     if (graf == 1)
       k = 0:1:iter;
-      plotFunction(k, error, 'Chebyshev Method')
+      plotFunction(k, error, "Chebyshev Method");
     endif
   catch
     error("f has an unknown function.");
@@ -180,7 +180,67 @@ function [xAprox, iter] = sne_ud_3(f, x0, tol, graf=1)
   return;
 endfunction
 
-% ============================== Method 3 ====================================
+
+% ============================== Method 4 ====================================
+%
+% Newton-Secant Method
+%
+% Arguments:
+%   f {string} - polynomial whose solution must be found
+%   x0 {float, int} - initial value to start iterations
+%   tol {float, int} - tolerance that indicates the stop condition
+%   graf {int} - flag that indicates if a graf must be done
+%
+% Returns:
+%   xAprox {float} - root approximation
+%   _iter {int} - amount of iterations required
+function [xAprox, iter] = sne_ud_4(f, x0, tol, graf=1)
+  if (typeinfo(f) != "string")
+    error("f must be a string");
+  endif
+
+  if (graf != 0 && graf != 1)
+    error("graf must be 0 or 1");
+  endif
+
+  syms fx(x);
+  fx(x) = f;
+  xn = [x0];
+  iter = 0;
+
+  try
+    error = [abs(double(fx(xn(end))))];
+
+    while (error(end) > tol)
+      xk = xn(end);
+
+      y = double(fx(xk));
+      df = diff(fx);
+      yk = xk - y / double(df(xk));
+
+      xk_next = xk - (y / (y - double(fx(yk)))) * y / double(df(xk));
+
+      xn = [xn xk_next];
+      error = [error abs(double(fx(xk_next)))];
+
+      iter += 1;
+    endwhile
+
+    if (graf == 1)
+      k = 0:1:iter;
+      plotFunction(k, error, "Newton-Secant Method")
+    endif
+  catch
+    error("f has an unknown function.");
+  end
+  
+  xAprox = xn(end);
+  return;
+endfunction
+
+
+% ============================== Method 5 ====================================
+%
 
 
 

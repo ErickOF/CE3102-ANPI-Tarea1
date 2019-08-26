@@ -7,46 +7,46 @@ ITER_LIMIT = 10000;
 
 
 % ============================== Method 1 ====================================
-function [xn, itera, graph] = sne_fd_1(expr, x0, tol)
+function [xAprox, iter] = sne_fd_1(expr, x0, tol, graf)
   %{
   Steffensen's Method
+  
   Arguments:
-      expr {symbolic} -- polynomial whose solution must be found
-      x0 {double} -- initial value to start iterations
-      tol {double} -- tolerance that indicates the stop condition
+    f {string} -- polynomial whose solution must be found
+    x0 {float, int} -- initial value to start iterations
+    tol {float, int} -- tolerance that indicates the stop condition
+    graf {int} -- flag that indicates if a graph must be done
 
   Returns:
-      xn {double} -- root approximation
-      itera {int} -- amount of iterations required
-      graph {int} -- flag that indicates if a graph must be done
+    xAprox {float} -- root approximation
+    _iter {int} -- amount of iterations required
   %}
 
   % -------------------------- Local variables -------------------------------
   global ITER_LIMIT
-  itera = 0;                          % Amount of iterations
-  graph = 0;                          % Wether the graph will be shown
+  iter = 0;                           % Amount of iterations
   f = function_handle(expr);          % Use expression as function
-  xn = x0;                            % Initialize x_n
+  xAprox = x0;                        % Initialize x_n
   xNext = 0;                          % Initialize x_(n+1)
-  error = abs(f(xn));                 % First errror calculation
+  error = abs(f(xAprox));             % First errror calculation
   
   % ------------------------- Steffensen's Method ---------------------------
   try
     while (error > tol)
-      if (itera > ITER_LIMIT)
+      if (iter > ITER_LIMIT)
         warning("Iteration limit reached");
         return;
       endif
-      div = f(xn + f(xn)) - f(xn);
+      div = f(xAprox + f(xAprox)) - f(xAprox);
       if (div ~= 0)
-        xNext = xn - (f(xn)^2) / div;
+        xNext = xAprox - (f(xAprox)^2) / div;
       else
         warning("[Math error]: Division by zero");
         return;
       end
-      xn = xNext;
-      error = abs(f(xn));
-      itera++;
+      xAprox = xNext;
+      error = abs(f(xAprox));
+      iter++;
     endwhile
     graph = 1
   catch

@@ -35,7 +35,6 @@ def sne_ud_1(f, x0, tol, graf):
         return x0, 0
     # ------------------------ Local variables -------------------------------
     funct = sympify(f)                      # Transforms string to function
-    graph = 0                               # Wether the graph will be shown
     _iter = 0                               # Amount of iterations
     xAprox = sympify(x0)                    # xAprox is a Sympy variable
     xNext = sympify(0)                      # xNext (x_(n+1))
@@ -90,7 +89,6 @@ def sne_ud_2(f, x0, tol, graf):
         return x0, 0
     # ------------------------ Local variables -------------------------------
     funct = sympify(f)                      # Transforms string to function
-    graph = 0                               # Wether the graph will be shown
     _iter = 0                               # Amount of iterations
     xAprox = sympify(x0)                    # xAprox is a Sympy variable
     xNext = sympify(0)                      # xNext (x_(n+1))

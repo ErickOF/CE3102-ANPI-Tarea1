@@ -27,7 +27,7 @@ def sne_ud_1(expr, x0, tol):
     Returns:
         xn {float} -- root approximation
         itera {int} -- amount of iterations required
-        graph {int} -- flag that indicates if a graph must be done
+        graf {int} -- flag that indicates if a graf must be done
     """
 
     # -------------------------- Validations ---------------------------------
@@ -35,7 +35,7 @@ def sne_ud_1(expr, x0, tol):
         return x0, 0, 0
     # ------------------------ Local variables -------------------------------
     f = sympify(expr)                       # Transforms string to function
-    graph = 0                               # Wether the graph will be shown
+    graf = 0                                # Wether the graf will be shown
     itera = 0                               # Amount of iterations
     xn = sympify(x0)                        # xn is a Sympy variable
     xNext = sympify(0)                      # xNext (x_(n+1))
@@ -46,7 +46,7 @@ def sne_ud_1(expr, x0, tol):
         while (error > tol):
             if(itera >= ITER_LIMIT):
                 print("WARNING: Iteration limit reached")
-                return N(xn, DECIMAL_PRECISION), itera, graph
+                return N(xn, DECIMAL_PRECISION), itera, graf
             fDiff = diff(f, x)              # First derivative
             fDiff2 = diff(fDiff, x)         # Second derivative
             div = (2*(fDiff.subs(x, xn))*(fDiff.subs(x, xn)) -
@@ -55,17 +55,17 @@ def sne_ud_1(expr, x0, tol):
                 xNext = xn - (2*(f.subs(x, xn))*(fDiff.subs(x, xn))) / div
             else:
                 print("WARNING: [Math error] Division by zero")
-                return N(xn, DECIMAL_PRECISION), itera, graph
+                return N(xn, DECIMAL_PRECISION), itera, graf
             xn = N(xNext, DECIMAL_PRECISION)
             error = abs(f.subs(x, xn))
             itera += 1                      # New iteration
-        graph = 1                           # Graph can be displayed
+        graf = 1                           # graf can be displayed
 
     except Exception as exception:
         print("WARNING: [Math error]", type(
             exception).__name__, "-", str(exception))
 
-    return N(xn, DECIMAL_PRECISION), itera, graph
+    return N(xn, DECIMAL_PRECISION), itera, graf
 
 # ============================== Method 2 ====================================
 def sne_ud_2(expr, x0, tol):
@@ -79,7 +79,7 @@ def sne_ud_2(expr, x0, tol):
     Returns:
         xn {float} -- root approximation
         itera {int} -- amount of iterations required
-        graph {int} -- flag that indicates if a graph must be done
+        graf {int} -- flag that indicates if a graf must be done
     """
 
     # -------------------------- Validations ---------------------------------
@@ -87,7 +87,7 @@ def sne_ud_2(expr, x0, tol):
         return x0, 0, 0
     # ------------------------ Local variables -------------------------------
     f = sympify(expr)                       # Transforms string to function
-    graph = 0                               # Wether the graph will be shown
+    graf = 0                               # Wether the graf will be shown
     itera = 0                               # Amount of iterations
     xn = sympify(x0)                        # xn is a Sympy variable
     xNext = sympify(0)                      # xNext (x_(n+1))
@@ -98,7 +98,7 @@ def sne_ud_2(expr, x0, tol):
         while (error > tol):
             if(itera >= ITER_LIMIT):
                 print("WARNING: Iteration limit reached")
-                return N(xn, DECIMAL_PRECISION), itera, graph
+                return N(xn, DECIMAL_PRECISION), itera, graf
             fDiff = diff(f, x)
             div = fDiff.subs(x, xn)
             if (div != 0):
@@ -107,21 +107,21 @@ def sne_ud_2(expr, x0, tol):
                     xNext = xn - (f.subs(x, xn) / div2)
                 else:
                     print("WARNING: [Math error] Division by zero")
-                    return N(xn, DECIMAL_PRECISION), itera, graph
+                    return N(xn, DECIMAL_PRECISION), itera, graf
             else:
                 print("WARNING: [Math error] Division by zero")
-                return N(xn, DECIMAL_PRECISION), itera, graph
+                return N(xn, DECIMAL_PRECISION), itera, graf
 
             xn = N(xNext, DECIMAL_PRECISION)
             error = abs(f.subs(x, xn))
             itera += 1                      # New iteration
-        graph = 1                           # Graph can be displayed
+        graf = 1                           # graf can be displayed
 
     except Exception as exception:
         print("WARNING: [Math error]", type(
             exception).__name__, "-", str(exception))
 
-    return N(xn, DECIMAL_PRECISION), itera, graph
+    return N(xn, DECIMAL_PRECISION), itera, graf
 
 # ============================== Method 3 ====================================
 def sne_ud_3(f, x0, tol, graf=1):
@@ -135,11 +135,11 @@ def sne_ud_3(f, x0, tol, graf=1):
         f {string} - polynomial whose solution must be found
         x0 {float, int} - initial value to start iterations
         tol {float, int} - tolerance that indicates the stop condition
-        graph {int} - flag that indicates if a graph must be done
+        graf {int} - flag that indicates if a graf must be done
 
     Returns:
 
-        xn {float} - root approximation
+        xAprox {float} - root approximation
         _iter {int} - amount of iterations required
     """
     if (not isinstance(f, str)):
@@ -197,7 +197,7 @@ def sne_ud_4(f, x0, tol, graf=1):
         f {string} - polynomial whose solution must be found
         x0 {float, int} - initial value to start iterations
         tol {float, int} - tolerance that indicates the stop condition
-        graph {int} - flag that indicates if a graph must be done
+        graf {int} - flag that indicates if a graf must be done
 
     Returns:
 
@@ -259,7 +259,7 @@ def sne_ud_5(f, x0, tol, graf=1):
         f {string} - polynomial whose solution must be found
         x0 {float, int} - initial value to start iterations
         tol {float, int} - tolerance that indicates the stop condition
-        graph {int} - flag that indicates if a graph must be done
+        graf {int} - flag that indicates if a graf must be done
 
     Returns:
 
@@ -329,7 +329,7 @@ def sne_ud_6(f, x0, tol, graf=1):
         f {string} - polynomial whose solution must be found
         x0 {float, int} - initial value to start iterations
         tol {float, int} - tolerance that indicates the stop condition
-        graph {int} - flag that indicates if a graph must be done
+        graf {int} - flag that indicates if a graf must be done
 
     Returns:
 

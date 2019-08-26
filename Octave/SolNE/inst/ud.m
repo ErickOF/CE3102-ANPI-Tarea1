@@ -120,7 +120,7 @@ endfunction
 %
 % Chebyshev Method
 %    
-% Metodos iterativos aplicados a la ecuación de Kepler. Page 62.
+% Metodos iterativos aplicados a la ecuaciï¿½n de Kepler. Page 62.
 %
 % Arguments:
 %   f {string} - polynomial whose solution must be found
@@ -242,7 +242,7 @@ endfunction
 %
 % Danby Burkardt Method
 %
-% Metodos iterativos aplicados a la ecuación de Kepler. Page 120.
+% Metodos iterativos aplicados a la ecuaciï¿½n de Kepler. Page 120.
 %
 % Arguments:
 %   f {string} - polynomial whose solution must be found

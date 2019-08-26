@@ -103,7 +103,7 @@ def sne_fd_2(f, x0, a0, b0, tol, graf=1):
     _iter = 0
 
     try:
-        def fx(x): return eval(f)
+        fx = lambda x: eval(f)
         error = np.array([abs(fx(xAprox[-1]))])
 
         hk = 1
@@ -171,7 +171,7 @@ def sne_fd_3(f, x0, tol, graf=1):
     _iter = 0
 
     try:
-        def fx(x): return eval(f)
+        fx = lambda x: eval(f)
         error = np.array([abs(fx(xAprox[-1]))])
 
         while (abs(fx(xAprox[-1])) > tol):
@@ -234,7 +234,7 @@ def sne_fd_4(f, x0, tol, graf=1):
     _iter = 0
 
     try:
-        def fx(x): return eval(f)
+        fx = lambda x: eval(f)
         error = np.array([abs(fx(xAprox[-1]))])
 
         while (abs(fx(xAprox[-1])) > tol):
@@ -301,7 +301,7 @@ def sne_fd_5(f, x0, tol, graf=1):
     _iter = 0
 
     try:
-        def fx(x): return eval(f)
+        fx = lambda x: eval(f)
         error = np.array([abs(fx(xAprox[-1]))])
 
         while (abs(fx(xAprox[-1])) > tol):
@@ -369,7 +369,7 @@ def sne_fd_6(f, x0, tol, graf=1):
     _iter = 0
 
     try:
-        def fx(x): return eval(f)
+        fx = lambda x: eval(f)
         error = np.array([abs(fx(xAprox[-1]))])
 
         while (abs(fx(xAprox[-1])) > tol):

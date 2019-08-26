@@ -139,11 +139,11 @@ def sne_ud_3(f, x0, tol, graf=1):
         f {string} - polynomial whose solution must be found
         x0 {float, int} - initial value to start iterations
         tol {float, int} - tolerance that indicates the stop condition
-        graph {int} - flag that indicates if a graph must be done
+        graf {int} - flag that indicates if a graf must be done
 
     Returns:
 
-        xn {float} - root approximation
+        xAprox {float} - root approximation
         _iter {int} - amount of iterations required
     """
     if (not isinstance(f, str)):
@@ -162,7 +162,7 @@ def sne_ud_3(f, x0, tol, graf=1):
     _iter = 0
 
     try:
-        def fx(x): return eval(f)
+        fx = lambda x: eval(f)
         error = np.array([abs(fx(xAprox[-1]))])
 
         while (abs(fx(xAprox[-1])) > tol):
@@ -203,11 +203,11 @@ def sne_ud_4(f, x0, tol, graf=1):
         f {string} - polynomial whose solution must be found
         x0 {float, int} - initial value to start iterations
         tol {float, int} - tolerance that indicates the stop condition
-        graph {int} - flag that indicates if a graph must be done
+        graf {int} - flag that indicates if a graf must be done
 
     Returns:
 
-        xn {float} - root approximation
+        xAprox {float} - root approximation
         _iter {int} - amount of iterations required
     """
     if (not isinstance(f, str)):
@@ -226,7 +226,7 @@ def sne_ud_4(f, x0, tol, graf=1):
     _iter = 0
 
     try:
-        def fx(x): return eval(f)
+        fx = lambda x: eval(f)
         error = np.array([abs(fx(xAprox[-1]))])
 
         while (abs(fx(xAprox[-1])) > tol):
@@ -267,11 +267,11 @@ def sne_ud_5(f, x0, tol, graf=1):
         f {string} - polynomial whose solution must be found
         x0 {float, int} - initial value to start iterations
         tol {float, int} - tolerance that indicates the stop condition
-        graph {int} - flag that indicates if a graph must be done
+        graf {int} - flag that indicates if a graf must be done
 
     Returns:
 
-        xn {float} - root approximation
+        xAprox {float} - root approximation
         _iter {int} - amount of iterations required
     """
     if (not isinstance(f, str)):
@@ -290,7 +290,7 @@ def sne_ud_5(f, x0, tol, graf=1):
     _iter = 0
 
     try:
-        def fx(x): return eval(f)
+        fx = lambda x: eval(f)
         error = np.array([abs(fx(xAprox[-1]))])
 
         while (abs(fx(xAprox[-1])) > tol):
@@ -339,11 +339,11 @@ def sne_ud_6(f, x0, tol, graf=1):
         f {string} - polynomial whose solution must be found
         x0 {float, int} - initial value to start iterations
         tol {float, int} - tolerance that indicates the stop condition
-        graph {int} - flag that indicates if a graph must be done
+        graf {int} - flag that indicates if a graf must be done
 
     Returns:
 
-        xn {float} - root approximation
+        xAprox {float} - root approximation
         _iter {int} - amount of iterations required
     """
     if (not isinstance(f, str)):
@@ -362,7 +362,7 @@ def sne_ud_6(f, x0, tol, graf=1):
     _iter = 0
 
     try:
-        def fx(x): return eval(f)
+        fx = lambda x: eval(f)
         error = np.array([abs(fx(xAprox[-1]))])
 
         while (abs(fx(xAprox[-1])) > tol):

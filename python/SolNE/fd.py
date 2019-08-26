@@ -28,7 +28,6 @@ def sne_fd_1(expr, x0, tol):
         xn {float} -- root approximation
         itera {int} -- amount of iterations required
         graph {int} -- flag that indicates if a graph must be done
-
     """
 
     # -------------------------- Validations ---------------------------------
@@ -67,6 +66,25 @@ def sne_fd_1(expr, x0, tol):
 
 # ============================== Method 2 ====================================
 def sne_fd_2(f, x0, a0, b0, tol, graf=1):
+    """
+    Yun-Petkovic Method
+
+    Métodos iterativos aplicados a la ecuación de Kepler. Page 112.
+
+    Arguments:
+
+        f  {string} - polynomial whose solution must be found
+        x0 {float, int} - initial value to start iterations
+        a0 {float, int} - interval low value
+        b0 {float, int} - interval high value
+        tol {float, int} - tolerance that indicates the stop condition
+        graph {int} - flag that indicates if a graph must be done
+
+    Returns:
+
+        xn {float} - root approximation
+        _iter {int} - amount of iterations required
+    """
     if (not isinstance(f, str)):
         raise ValueError('f must be a string')
     
@@ -116,6 +134,23 @@ def sne_fd_2(f, x0, a0, b0, tol, graf=1):
 
 # ============================== Method 3 ====================================
 def sne_fd_3(f, x0, tol, graf=1):
+    """
+    Jain Method
+    
+    Metodos iterativos optimos para la resolucion de ecuaciones no lineales. Page 1. Equation 1.
+
+    Arguments:
+
+        f  {string} - polynomial whose solution must be found
+        x0 {float, int} - initial value to start iterations
+        tol {float, int} - tolerance that indicates the stop condition
+        graph {int} - flag that indicates if a graph must be done
+
+    Returns:
+
+        xn {float} - root approximation
+        _iter {int} - amount of iterations required
+    """
     if (not isinstance(f, str)):
         raise ValueError('f must be a string')
 
@@ -160,6 +195,23 @@ def sne_fd_3(f, x0, tol, graf=1):
 
 # ============================== Method 4 ====================================
 def sne_fd_4(f, x0, tol, graf=1):
+    """
+    Liu Method
+    
+    Metodos iterativos optimos para la resolucion de ecuaciones no lineales. Page 1. Equation 2.
+
+    Arguments:
+
+        f  {string} - polynomial whose solution must be found
+        x0 {float, int} - initial value to start iterations
+        tol {float, int} - tolerance that indicates the stop condition
+        graph {int} - flag that indicates if a graph must be done
+
+    Returns:
+
+        xn {float} - root approximation
+        _iter {int} - amount of iterations required
+    """
     if (not isinstance(f, str)):
         raise ValueError('f must be a string')
 
@@ -208,6 +260,23 @@ def sne_fd_4(f, x0, tol, graf=1):
 
 # ============================== Method 5 ====================================
 def sne_fd_5(f, x0, tol, graf=1):
+    """
+    Ren Method
+    
+    Metodos iterativos optimos para la resolucion de ecuaciones no lineales. Page 2. Equation 2.
+
+    Arguments:
+
+        f  {string} - polynomial whose solution must be found
+        x0 {float, int} - initial value to start iterations
+        tol {float, int} - tolerance that indicates the stop condition
+        graph {int} - flag that indicates if a graph must be done
+
+    Returns:
+
+        xn {float} - root approximation
+        _iter {int} - amount of iterations required
+    """
     if (not isinstance(f, str)):
         raise ValueError('f must be a string')
 
@@ -247,7 +316,7 @@ def sne_fd_5(f, x0, tol, graf=1):
         
         if graf == 1:
             k = np.linspace(0, _iter, _iter + 1)
-            plotFunction(k, error, 'Liu Method')
+            plotFunction(k, error, 'Ren Method')
 
         return xAprox[-1], _iter
     except AttributeError as e:
@@ -257,6 +326,23 @@ def sne_fd_5(f, x0, tol, graf=1):
 
 # ============================== Method 6 ====================================
 def sne_fd_6(f, x0, tol, graf=1):
+    """
+    Free Derivative Ostrowski Method
+    
+    Journal of Computational and Applied mathematics. Equation 4
+
+    Arguments:
+
+        f  {string} - polynomial whose solution must be found
+        x0 {float, int} - initial value to start iterations
+        tol {float, int} - tolerance that indicates the stop condition
+        graph {int} - flag that indicates if a graph must be done
+
+    Returns:
+
+        xn {float} - root approximation
+        _iter {int} - amount of iterations required
+    """
     if (not isinstance(f, str)):
         raise ValueError('f must be a string')
 
@@ -334,6 +420,21 @@ def validator(expr, x0, tol):
     return True
 
 def steffensen_method(expr, x0, n):
+    """
+    Steffensen Method
+    
+    This function is used to calculate some necessary values for other functions
+
+    Arguments:
+
+        exp {string} - polynomial whose solution must be found
+        x0 {float, int} - initial value to start iterations
+        n {int} - number of iterations
+
+    Returns:
+
+        xn {float} - root approximation
+    """
     f = lambda x: eval(expr)
     itera = 0
     xn = x0
@@ -348,6 +449,19 @@ def steffensen_method(expr, x0, n):
     return xn
 
 def plotFunction(k, error, title):
+    """
+    This function is used to plot iterations vs error
+
+    Arguments:
+
+        k {iterable} - an iterable with x axis values
+        error {iterable} - an iterable with y axis values
+        title {string} - plot title
+
+    Returns:
+
+        This function doesn't return
+    """
     plt.title(title)
     plt.xlabel('Iterations k')
     plt.ylabel('Error |f(xk)|')

@@ -125,6 +125,23 @@ def sne_ud_2(expr, x0, tol):
 
 # ============================== Method 3 ====================================
 def sne_ud_3(f, x0, tol, graf=1):
+    """
+    Chebyshev Method
+    
+    Metodos iterativos aplicados a la ecuación de Kepler. Page 62.
+
+    Arguments:
+
+        f {string} - polynomial whose solution must be found
+        x0 {float, int} - initial value to start iterations
+        tol {float, int} - tolerance that indicates the stop condition
+        graph {int} - flag that indicates if a graph must be done
+
+    Returns:
+
+        xn {float} - root approximation
+        _iter {int} - amount of iterations required
+    """
     if (not isinstance(f, str)):
         raise ValueError('f must be a string')
     
@@ -172,6 +189,21 @@ def sne_ud_3(f, x0, tol, graf=1):
 
 # ============================== Method 4 ====================================
 def sne_ud_4(f, x0, tol, graf=1):
+    """
+    Newton-Secant Method
+
+    Arguments:
+
+        f {string} - polynomial whose solution must be found
+        x0 {float, int} - initial value to start iterations
+        tol {float, int} - tolerance that indicates the stop condition
+        graph {int} - flag that indicates if a graph must be done
+
+    Returns:
+
+        xn {float} - root approximation
+        _iter {int} - amount of iterations required
+    """
     if (not isinstance(f, str)):
         raise ValueError('f must be a string')
     
@@ -217,6 +249,23 @@ def sne_ud_4(f, x0, tol, graf=1):
 
 # ============================== Method 5 ====================================
 def sne_ud_5(f, x0, tol, graf=1):
+    """
+    Danby Burkardt Method
+    
+    Metodos iterativos aplicados a la ecuación de Kepler. Page 120.
+
+    Arguments:
+
+        f {string} - polynomial whose solution must be found
+        x0 {float, int} - initial value to start iterations
+        tol {float, int} - tolerance that indicates the stop condition
+        graph {int} - flag that indicates if a graph must be done
+
+    Returns:
+
+        xn {float} - root approximation
+        _iter {int} - amount of iterations required
+    """
     if (not isinstance(f, str)):
         raise ValueError('f must be a string')
     
@@ -267,6 +316,26 @@ def sne_ud_5(f, x0, tol, graf=1):
 
 # ============================== Method 6 ====================================
 def sne_ud_6(f, x0, tol, graf=1):
+    """
+    Richmond Method
+    
+    Metodos Numericos por Andres L. Granados M., Editorial Digiteria.
+    Valle de Sartenejas. Caracas, Venezuela. Junio, 2019.
+    https://www.academia.edu/30040048/M%C3%A9todos_Num%C3%A9ricos.
+    Page 13. Equation 3 and 4.
+
+    Arguments:
+
+        f {string} - polynomial whose solution must be found
+        x0 {float, int} - initial value to start iterations
+        tol {float, int} - tolerance that indicates the stop condition
+        graph {int} - flag that indicates if a graph must be done
+
+    Returns:
+
+        xn {float} - root approximation
+        _iter {int} - amount of iterations required
+    """
     if (not isinstance(f, str)):
         raise ValueError('f must be a string')
     
@@ -345,6 +414,19 @@ def validator(expr, x0, tol):
     return True
 
 def plotFunction(k, error, title):
+    """
+    This function is used to plot iterations vs error
+
+    Arguments:
+
+        k {iterable} - an iterable with x axis values
+        error {iterable} - an iterable with y axis values
+        title {string} - plot title
+
+    Returns:
+
+        This function doesn't return
+    """
     plt.title(title)
     plt.xlabel('Iterations k')
     plt.ylabel('Error |f(xk)|')

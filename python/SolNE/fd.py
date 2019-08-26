@@ -432,7 +432,7 @@ def validator(f, x0, tol):
     return True
 
 
-def steffensen_method(f, x0, n):
+def steffensen_method(exp, x0, n):
     """
     Steffensen Method
 
@@ -448,18 +448,18 @@ def steffensen_method(f, x0, n):
 
         xn {float} - root approximation
     """
-    def f(x): return eval(f)
-    itera = 0
-    xn = x0
+    f = lambda x: eval(exp)
+    _iter = 0
+    xAprox = x0
 
-    while (itera <= n):
-        df = misc.derivative(f, xn, dx=1e-6)
-        df2 = misc.derivative(f, xn, n=2, dx=1e-6)
-        div = (2 * df**2 - f(xn) * df2)
+    while (_iter <= n):
+        df = misc.derivative(f, xAprox, dx=1e-6)
+        df2 = misc.derivative(f, xAprox, n=2, dx=1e-6)
+        div = (2 * df**2 - f(xAprox) * df2)
 
-        xn = xn - (2 * f(xn) * df) / div
-        itera += 1
-    return xn
+        xAprox = xAprox - (2 * f(xAprox) * df) / div
+        _iter += 1
+    return xAprox
 
 
 def plotFunction(k, error, title):

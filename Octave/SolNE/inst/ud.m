@@ -131,8 +131,8 @@ endfunction
 %   graph {int} - flag that indicates if a graph must be done
 %
 % Returns:
-%   xn {float} - root approximation
-%   _iter {int} - amount of iterations required
+%   xAprox {float} - root approximation
+%   iter {int} - amount of iterations required
 %
 function [xAprox, iter] = sne_ud_3(f, x0, tol, graf=1)
   if (typeinfo(f) != "string")
@@ -193,7 +193,8 @@ endfunction
 %
 % Returns:
 %   xAprox {float} - root approximation
-%   _iter {int} - amount of iterations required
+%   iter {int} - amount of iterations required
+%
 function [xAprox, iter] = sne_ud_4(f, x0, tol, graf=1)
   if (typeinfo(f) != "string")
     error("f must be a string");
@@ -240,6 +241,71 @@ endfunction
 
 
 % ============================== Method 5 ====================================
+%
+% Danby Burkardt Method
+%
+% Metodos iterativos aplicados a la ecuación de Kepler. Page 120.
+%
+% Arguments:
+%   f {string} - polynomial whose solution must be found
+%   x0 {float, int} - initial value to start iterations
+%   tol {float, int} - tolerance that indicates the stop condition
+%   graf {int} - flag that indicates if a graf must be done
+%
+% Returns:
+%   xAprox {float} - root approximation
+%   iter {int} - amount of iterations required
+%
+function [xAprox, iter] = sne_ud_5(f, x0, tol, graf=1)
+  if (typeinfo(f) != "string")
+    error("f must be a string");
+  endif
+
+  if (graf != 0 && graf != 1)
+    error("graf must be 0 or 1");
+  endif
+
+  syms fx(x);
+  fx(x) = f;
+  xn = [x0];
+  iter = 0;
+
+  try
+    error = [abs(double(fx(xn(end))))];
+
+    while (error(end) > tol)
+      xk = xn(end);
+
+      yk = double(fx(xk));
+      df = double(diff(fx)(xk));
+      df2 = double(diff(diff(fx))(xk));
+      df3 = double(diff(diff(diff(fx)))(xk));
+      
+      Lf = yk * df2 / df^2;
+      Ldf = df * df3 / df2^2;
+
+      xk_next = xk - 1.5 * ((2 - Lf)**2 / (6 - 9 * Lf + 3 * Lf**2 + Lf**2 * Ldf)) * (yk / df);
+
+      xn = [xn xk_next];
+      error = [error abs(double(fx(xk_next)))];
+
+      iter += 1;
+    endwhile
+
+    if (graf == 1)
+      k = 0:1:iter;
+      plotFunction(k, error, "Danby Burkardt Method");
+    endif
+  catch
+    error("f has an unknown function.");
+  end
+  
+  xAprox = xn(end);
+  return;
+endfunction
+
+
+% ============================== Method 6 ====================================
 %
 
 

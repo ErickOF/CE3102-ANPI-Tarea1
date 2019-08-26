@@ -23,7 +23,7 @@ def sne_fd_1(f, x0, tol, graf):
         f {string} -- polynomial whose solution must be found
         x0 {float, int} -- initial value to start iterations
         tol {float, int} -- tolerance that indicates the stop condition
-        graf {int} -- flag that indicates if a graph must be done
+        graf {int} -- flag that indicates if a graf must be done
 
     Returns:
         xAprox {float} -- root approximation
@@ -80,7 +80,7 @@ def sne_fd_2(f, x0, x1, x2, tol, graf=1):
         x1 {float, int} - interval low value
         x2 {float, int} - interval high value
         tol {float, int} - tolerance that indicates the stop condition
-        graph {int} - flag that indicates if a graph must be done
+        graf {int} - flag that indicates if a plot must be done
 
     Returns:
 
@@ -148,7 +148,7 @@ def sne_fd_3(f, x0, tol, graf=1):
         f  {string} - polynomial whose solution must be found
         x0 {float, int} - initial value to start iterations
         tol {float, int} - tolerance that indicates the stop condition
-        graph {int} - flag that indicates if a graph must be done
+        graf {int} - flag that indicates if a plot must be done
 
     Returns:
 
@@ -211,7 +211,7 @@ def sne_fd_4(f, x0, tol, graf=1):
         f  {string} - polynomial whose solution must be found
         x0 {float, int} - initial value to start iterations
         tol {float, int} - tolerance that indicates the stop condition
-        graph {int} - flag that indicates if a graph must be done
+        graf {int} - flag that indicates if a plot must be done
 
     Returns:
 
@@ -278,7 +278,7 @@ def sne_fd_5(f, x0, tol, graf=1):
         f  {string} - polynomial whose solution must be found
         x0 {float, int} - initial value to start iterations
         tol {float, int} - tolerance that indicates the stop condition
-        graph {int} - flag that indicates if a graph must be done
+        graf {int} - flag that indicates if a plot must be done
 
     Returns:
 
@@ -346,7 +346,7 @@ def sne_fd_6(f, x0, tol, graf=1):
         f  {string} - polynomial whose solution must be found
         x0 {float, int} - initial value to start iterations
         tol {float, int} - tolerance that indicates the stop condition
-        graph {int} - flag that indicates if a graph must be done
+        graf {int} - flag that indicates if a plot must be done
 
     Returns:
 

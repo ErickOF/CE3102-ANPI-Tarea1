@@ -1,4 +1,7 @@
 # =========== Important: ¡must install Sympy! (pip install sympy) ============
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy import misc
 from sympy import *
 
 
@@ -64,8 +67,53 @@ def sne_fd_1(expr, x0, tol):
 
 
 # ============================== Method 2 ====================================
-def sne_fd_2(*args, **kwargs):
-    pass
+def sne_fd_2(f, x0, a0, b0, tol, graf=1):
+    if (not isinstance(f, str)):
+        raise ValueError('f must be a string')
+    
+    if (not isinstance(x0, (int, float))):
+        raise ValueError('x0 must be a int or float')
+    
+    if (not isinstance(tol, (int, float))):
+        raise ValueError('tol must be a int or float')
+    
+    if (graf != 0 and graf != 1):
+        raise ValueError('graf must be 0 or 1')
+
+    xAprox = np.array([0, x0])
+    _iter = 0
+    
+    try:
+        fx = lambda x: eval(f)
+        error = np.array([abs(fx(xAprox[-1]))])
+
+        hk = 1
+        ak = a0
+        bk = b0
+
+        while (abs(fx(xAprox[-1])) > tol):
+            xk = xAprox[-1]
+
+            xk_next = xk - fx(xk)*(2 * hk / (fx(bk) - fx(ak)))
+
+            xAprox = np.append(xAprox, xk_next)
+            error = np.append(error, abs(fx(xk_next)))
+
+            hk = xk_next - xk
+            ak = xk_next - hk
+            bk = xk_next + hk
+
+            _iter += 1
+        
+        if graf == 1:
+            k = np.linspace(0, _iter, _iter + 1)
+            plotFunction(k, error, 'Yun-Petkovic Method')
+
+        return xAprox[-1], _iter
+    except AttributeError as e:
+        raise ValueError('f has an unknown function. ' + str(e).capitalize())
+    except TypeError as e:
+        raise ValueError('f has an unknown symbol. ' + str(e).capitalize())
 
 
 # ============================== Method 3 ====================================
@@ -99,19 +147,21 @@ def validator(expr, x0, tol):
 
     Returns:
         flag {boolean} -- true if all inputs are valid
-
     """
 
     # -------------------------- Validations ---------------------------------
     if (type(expr) != str):
         print("WARNING: invalid expression")
         return False
+
     if (type(x0) != float and type(x0) != int):
         print("WARNING: x_0 must be a number")
         return False
+
     if (type(tol) != float and type(tol) != int):
         print("WARNING: tolerance must be a number")
         return False
+
     try:
         f = sympify(expr)
     except Exception as exception:
@@ -119,3 +169,10 @@ def validator(expr, x0, tol):
             exception).__name__, "-", str(exception))
         return False
     return True
+
+def plotFunction(k, error, title):
+    plt.title(title)
+    plt.xlabel('Iterations k')
+    plt.ylabel('Error |f(xk)|')
+    plt.plot(k, error)
+    plt.show()

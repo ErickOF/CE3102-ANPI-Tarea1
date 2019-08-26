@@ -315,10 +315,64 @@ endfunction
 
 % ============================== Method 6 ====================================
 %
+% Free Derivative Ostrowski Method
+%
+% Journal of Computational and Applied mathematics. Equation 4
+%
+% Arguments:
+%   f  {string} - polynomial whose solution must be found
+%   x0 {float, int} - initial value to start iterations
+%   tol {float, int} - tolerance that indicates the stop condition
+%   graf {int} - flag that indicates if a plot must be done
+%
+% Returns:
+%   xAprox {float} - root approximation
+%   iter {int} - amount of iterations required
+function [xAprox, iter] = sne_fd_6(f, x0, tol, graf=1)
+  if (typeinfo(f) != "string")
+    error("f must be a string");
+  endif
+
+  if (graf != 0 && graf != 1)
+    error("graf must be 0 or 1");
+  endif
+
+  syms fx(x);
+  fx(x) = f;
+  xn = [x0];
+  iter = 0;
+
+  try
+    error = [abs(double(fx(xn(end))))];
+
+    while (error(end) > tol)
+      xk = xn(end);
+      
+      y = double(fx(xk));
+      yk = xk - (2 * y**2) / (double(fx(xk + y)) - double(fx(xk - y)));
+
+      xk_next = yk * (double(fx(yk)) - y) / (2 * double(fx(yk)) - y);
+
+      xn = [xn xk_next];
+      error = [error abs(double(fx(xk_next)))]
+
+      iter += 1;
+    endwhile
+
+    if (graf == 1)
+      k = 0:1:iter;
+      plotFunction(k, error, "Free Derivative Ostrowski Method")
+    endif
+  catch
+    error("f has an unknown function.");
+  end
+  
+  xAprox = xn(end);
+  return;
+endfunction
 
 
-
-% =========================== Auxiliaries functions =============================
+% ========================== Auxiliaries functions =============================
 
 % Steffensen Method
 %

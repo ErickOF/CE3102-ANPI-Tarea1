@@ -250,7 +250,67 @@ endfunction
 
 % ============================== Method 5 ====================================
 %
+% Ren Method
+%
+% Metodos iterativos optimos para la resolucion de ecuaciones no lineales. Page 2. Equation 2.
+%
+% Arguments:
+%   f  {string} - polynomial whose solution must be found
+%   x0 {float, int} - initial value to start iterations
+%   tol {float, int} - tolerance that indicates the stop condition
+%   graf {int} - flag that indicates if a plot must be done
+%
+% Returns:
+%   xAprox {float} - root approximation
+%   iter {int} - amount of iterations required
+function [xAprox, iter] = sne_fd_5(f, x0, tol, graf=1)
+  if (typeinfo(f) != "string")
+    error("f must be a string");
+  endif
 
+  if (graf != 0 && graf != 1)
+    error("graf must be 0 or 1");
+  endif
+
+  syms fx(x);
+  fx(x) = f;
+  xn = [x0];
+  iter = 0;
+
+  try
+    error = [abs(double(fx(xn(end))))];
+
+    while (error(end) > tol)
+      xk = xn(end);
+      
+      zk = xk + double(fx(xk));
+
+      yk = steffensen_method(f, x0, iter);
+      
+      f_xk_yk = (double(fx(yk)) - double(fx(xk))) / (yk - xk);
+      f_yk_zk = (double(fx(zk)) - double(fx(yk))) / (zk - yk);
+      f_xk_zk = (double(fx(zk)) - double(fx(xk))) / (zk - xk);
+
+      div = f_xk_yk + f_yk_zk - f_xk_zk + (yk - xk) * (yk - zk);
+      xk_next = yk - double(fx(yk)) / div;
+
+      xn = [xn xk_next];
+      error = [error abs(double(fx(xk_next)))];
+
+      iter += 1;
+    endwhile
+
+    if (graf == 1)
+      k = 0:1:iter;
+      plotFunction(k, error, "Ren Method")
+    endif
+  catch
+    error("f has an unknown function.");
+  end
+  
+  xAprox = xn(end);
+  return;
+endfunction
 
 
 % ============================== Method 6 ====================================

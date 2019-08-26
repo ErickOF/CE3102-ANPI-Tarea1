@@ -50,7 +50,6 @@ function [xAprox, _iter] = sne_ud_1(expr, x0, tol, graf)
       error = abs(f(xAprox));
       _iter++;
     endwhile
-    graph = 1
   catch
     warning("[Math error]: Problem found executing the method");
     return;
@@ -106,7 +105,6 @@ function [xAprox, _iter] = sne_ud_2(expr, x0, tol, graf)
       error = abs(f(xAprox));
       _iter++;
     endwhile
-    graph = 1
   catch
     warning("[Math error]: Problem found executing the method");
     return;

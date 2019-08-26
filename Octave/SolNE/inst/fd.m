@@ -48,7 +48,6 @@ function [xAprox, iter] = sne_fd_1(expr, x0, tol, graf)
       error = abs(f(xAprox));
       iter++;
     endwhile
-    graph = 1
   catch
     warning("[Math error]: Problem found executing the method");
     return;

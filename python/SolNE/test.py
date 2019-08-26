@@ -43,10 +43,9 @@ def test_sne_ud_6():
 
 
 if __name__ == '__main__':
-    f = '9*x+3'                  # Division by zero
-    # expression = 'exp(x) - 3*x'
-    x0 = 0.5
+    x0 = 3 / 4
     tol = 0.000001
+    f = "cos(2*x)^2-x^2"
     graf = 1
 
     print('\n\nSteffensen\'s: ')

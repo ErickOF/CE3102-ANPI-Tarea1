@@ -162,19 +162,42 @@ function [xAprox, iter] = sne_ud_3(f, x0, tol, graf=1)
 
       xk_next = xk - (1 + 0.5 * Lf) * y / double(df(xk));
 
-      xn = [xn xk_next]
-      error = [error abs(double(fx(xk_next)))]
+      xn = [xn xk_next];
+      error = [error abs(double(fx(xk_next)))];
 
       iter += 1;
-        
-      %if graf == 1:
-      %  k = np.linspace(0, _iter, _iter + 1)
-      %  plotFunction(k, error, 'Chebyshev Method')
     endwhile
+
+    if (graf == 1)
+      k = 0:1:iter;
+      plotFunction(k, error, 'Chebyshev Method')
+    endif
   catch
     error("f has an unknown function.");
   end
   
   xAprox = xn(end);
   return;
+endfunction
+
+% ============================== Method 3 ====================================
+
+
+
+% =========================== Auxiliaries functions =============================
+
+% This function is used to plot iterations vs error
+
+% Arguments:
+%   k {iterable} - an iterable with x axis values
+%   error {iterable} - an iterable with y axis values
+%   title {string} - plot title
+%
+% Returns:
+%   This function doesn't return
+function plotFunction(k, error, plotTitle)
+  plot(k, error);
+  title(plotTitle);
+  xlabel("Iterations k");
+  ylabel("Error |f(xk)|");
 endfunction

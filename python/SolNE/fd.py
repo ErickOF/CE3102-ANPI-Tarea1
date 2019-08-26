@@ -256,8 +256,48 @@ def sne_fd_5(f, x0, tol, graf=1):
         raise ValueError('f has an unknown symbol. ' + str(e).capitalize())
 
 # ============================== Method 6 ====================================
-def sne_fd_6(*args, **kwargs):
-    pass
+def sne_fd_6(f, x0, tol, graf=1):
+    if (not isinstance(f, str)):
+        raise ValueError('f must be a string')
+
+    if (not isinstance(x0, (int, float))):
+        raise ValueError('x0 must be a int or float')
+    
+    if (not isinstance(tol, (int, float))):
+        raise ValueError('tol must be a int or float')
+    
+    if (graf != 0 and graf != 1):
+        raise ValueError('graf must be 0 or 1')
+
+    xAprox = np.array([x0])
+    _iter = 0
+    
+    try:
+        fx = lambda x: eval(f)
+        error = np.array([abs(fx(xAprox[-1]))])
+
+        while (abs(fx(xAprox[-1])) > tol):
+            xk = xAprox[-1]
+
+            y = fx(xk)
+            yk = xk - (2 * y**2) / (fx(xk + y) - fx(xk - y))
+
+            xk_next = yk * (fx(yk) - y) / (2 * fx(yk) - y)
+
+            xAprox = np.append(xAprox, xk_next)
+            error = np.append(error, abs(fx(xk_next)))
+
+            _iter += 1
+        
+        if graf == 1:
+            k = np.linspace(0, _iter, _iter + 1)
+            plotFunction(k, error, 'Free Derivative Ostrowski Method')
+
+        return xAprox[-1], _iter
+    except AttributeError as e:
+        raise ValueError('f has an unknown function. ' + str(e).capitalize())
+    except TypeError as e:
+        raise ValueError('f has an unknown symbol. ' + str(e).capitalize())
 
 # =========================== Auxiliary function =============================
 def validator(expr, x0, tol):

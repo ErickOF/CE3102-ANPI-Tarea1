@@ -35,7 +35,6 @@ def sne_fd_1(f, x0, tol, graf):
         return x0, 0
     # ------------------------ Local variables -------------------------------
     funct = sympify(f)                      # Transforms string to function
-    graf = 0                                # Wether the graph will be shown
     _iter = 0                               # Amount of iterations
     xAprox = sympify(x0)                   # xApprox is a Sympy variable
     xNext = sympify(0)                      # xNext (x_(n+1))
